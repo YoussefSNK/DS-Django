@@ -125,3 +125,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect to events page after login
 LOGIN_REDIRECT_URL = '/events/'
+LOGIN_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
