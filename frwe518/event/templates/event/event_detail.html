@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ event.title }}</title>
+</head>
+<body>
+    <h1>{{ event.title }}</h1>
+    
+    {% if user.is_authenticated %}
+        <p>Bonjour, {{ user.username }} ! <a href="{% url 'logout' %}">Se déconnecter</a></p>
+    {% else %}
+        <p><a href="{% url 'login' %}">Se connecter</a> pour participer à cet événement</p>
+    {% endif %}
+    
+    <p>Date: {{ event.date }}</p>
+    <p>Lieu: {{ event.location }}</p>
+    <p>Nombre de participants: {{ participants_count }}</p>
+    
+    <div>
+        <h3>Description de l'événement</h3>
+        <p>{{ event.description }}</p>
+    </div>
+    
+    {% if user.is_authenticated %}
+        <div>
+            <h3>Votre participation</h3>
+            {% if user_is_participant %}
+                <p>Vous participez à cet événement.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="cancel">Annuler ma participation</button>
+                </form>
+            {% else %}
+                <p>Vous ne participez pas encore à cet événement.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="participate">Participer à l'événement</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    <p><a href="{% url 'event:event_list' %}">Retour à la liste des événements</a></p>
+</body>
+</html> 
