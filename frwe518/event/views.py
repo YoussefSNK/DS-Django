@@ -15,14 +15,6 @@ def event_detail(request, event_id):
     
     if request.user.is_authenticated:
         user_is_participant = event.participants.filter(id=request.user.id).exists()
-        
-        if request.method == 'POST':
-            if 'participate' in request.POST:
-                event.participants.add(request.user)
-                return redirect('event:event_detail', event_id=event.id)
-            elif 'cancel' in request.POST:
-                event.participants.remove(request.user)
-                return redirect('event:event_detail', event_id=event.id)
     
     context = {
         'event': event,
@@ -30,3 +22,15 @@ def event_detail(request, event_id):
         'participants_count': event.participants.count(),
     }
     return render(request, 'event/event_detail.html', context)
+
+@login_required
+def toggle_participation(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    
+    if request.method == 'POST':
+        if 'participate' in request.POST:
+            event.participants.add(request.user)
+        elif 'cancel' in request.POST:
+            event.participants.remove(request.user)
+    
+    return redirect('event:event_detail', event_id=event.id)

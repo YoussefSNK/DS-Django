@@ -26,13 +26,13 @@
             <h3>Votre participation</h3>
             {% if user_is_participant %}
                 <p>Vous participez à cet événement.</p>
-                <form method="post">
+                <form method="post" action="{% url 'event:toggle_participation' event_id=event.id %}">
                     {% csrf_token %}
                     <button type="submit" name="cancel">Annuler ma participation</button>
                 </form>
             {% else %}
                 <p>Vous ne participez pas encore à cet événement.</p>
-                <form method="post">
+                <form method="post" action="{% url 'event:toggle_participation' event_id=event.id %}">
                     {% csrf_token %}
                     <button type="submit" name="participate">Participer à l'événement</button>
                 </form>
